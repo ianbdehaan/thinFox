@@ -1,5 +1,7 @@
 # thinFox
 
+![Screenshot](screenshot.png)
+
 ## Keyboard centered thin layout firefox css
 
 For people that, like me, prefer the workspace without a lot of visual polution from menus.
