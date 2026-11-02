@@ -34,6 +34,5 @@ if I realize there is interest around customizing this layout I might put some t
 None at the moment. If you find one, please open an issue and let me know.
 
 ## Extra remarks:
-1. There are no borders or curved edged in the firefox layout, they belong to my hyperland configuration.
-2. The layout is not purple, I use **Firefox Color** for the colors to match my system
-3. This was not a big project, and I used a lot of code from other people, but if you like the design an would like to donate anyways: https://buymeacoffee.com/ianbdehaan
+1. The layout is not purple, I use **Firefox Color** for the colors to match my system
+2. This was not a big project, and I used a lot of code from other people, but if you like the design an would like to donate anyways: https://buymeacoffee.com/ianbdehaan
