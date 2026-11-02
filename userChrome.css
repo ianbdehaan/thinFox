@@ -1,144 +1,144 @@
-/* thinFox by ianbdehaan, */
+/* thinFox by ianbdehaan */
 /* credits to https://github.com/lr-tech/OnelineProton/ for a big part of the code */
+/* Updated for the current address bar (<moz-urlbar>): the old "breakout"
+   mechanism is gone, so the bar is now expanded by moving its container. */
+
 
 /* S E T T I N G S */
 
 :root {
-  --navbarWidth     : 55px;
-  --animationSpeed  : 0.15s;
-  --tab-min-height: 20px !important;
+  --navbarWidth    : 55px;
+  --animationSpeed : 0.15s;
+  --tab-min-height : 20px !important;
 }
 
 
 /* H I D I N G   E L E M E N T S */
-/* Comment or uncomment depending of what elements you want to hide */
+/* Comment or uncomment depending on what elements you want to hide */
 
-/* Back button */
-#back-button { display: none !important }
+/* Back and forward buttons */
+#back-button    { display: none !important; }
+#forward-button { display: none !important; }
 
-/* Forward button */
-#forward-button { display: none !important }
+/* Reload / stop button */
+#stop-reload-button { display: none !important; }
+
+/* Hamburger menu. CAUTION: if you hide this some popups may be bugged */
+#PanelUI-button { display: none !important; }
 
 /* "Shield" icon */
-#tracking-protection-icon-container { display: none !important }
+#tracking-protection-icon-container { display: none !important; }
 
 /* Site information button */
-#identity-box { display: none !important }
+#identity-box { display: none !important; }
 
-/* This is the "Search with" indicator on the urlbar */
-#urlbar-search-mode-indicator { display: none !important }
+/* Combined shield + site information button
+   (replaces the two above when Firefox's new trust panel is enabled) */
+#trust-icon-container { display: none !important; }
 
-/* Zoom button */
-#urlbar-zoom-button { display: none !important }
+/* "Search with" indicator */
+#urlbar-search-mode-indicator { display: none !important; }
 
-/* Page action (right three dash button) */
-#pageActionButton { display: none !important }
+/* Search engine picker on the left of the address bar */
+.searchmode-switcher { display: none !important; }
 
-/* These are the buttons on the right of the urlbar */
-#page-action-buttons { display: none !important }
+/* "Switch to tab" / extension label */
+#urlbar-label-box { display: none !important; }
 
-#urlbar-label-box { display: none !important }
-
-/* This one is the hamburger menu! */
-/* CAUTION: if you hide this some popups may be bugged */
-#PanelUI-button { display: none !important }
-
-#reload-button { display: none !important }
-
-#stop-button { display: none !important }
+/* Everything on the right of the address bar
+   (zoom, bookmark star, reader view, page actions, container label...) */
+#page-action-buttons { display: none !important; }
 
 /* Tab close button */
-.tab-close-button { display: none !important } 
+.tab-close-button { display: none !important; }
 
-/*============================================================================*/
-/* Oneline tweak */
+/* Empty drag spaces */
+.titlebar-spacer { display: none !important; }
 
+/* Minimize and maximize buttons at the far right, not needed in a tiling WM.
+   The close button is kept, so the window can still be closed without a keyboard */
+.titlebar-min,
+.titlebar-max,
+.titlebar-restore { display: none !important; }
+
+
+/* O N E L I N E   L A Y O U T */
+
+/* Tabs start after the nav bar... */
 #TabsToolbar {
-  margin-left : var(--navbarWidth) !important;
+  margin-left: var(--navbarWidth) !important;
 }
 
+/* ...and the nav bar is squeezed into that gap, on the same row */
 #nav-bar {
-  margin-right: calc(100vw - var(--navbarWidth)) !important;
+  position     : relative !important; /* anchors the expanded address bar */
+  margin-right : calc(100vw - var(--navbarWidth)) !important;
+  background   : none !important;
+  box-shadow   : none !important;
 }
 
-#urlbar-container {
-  min-width   : 0px !important;
-  max-width   : 0px !important;
-}
-
-:root:not([uidensity="compact"]):not([uidensity="touch"]) #nav-bar {
-  margin-top  : -30px !important;
-  height      : 29px !important;
+:root:not([uidensity="compact"], [uidensity="touch"]) #nav-bar {
+  margin-top : -30px !important;
+  height     : 29px !important;
 }
 
 #tabbrowser-tabs {
-    margin-top  : -1px !important;
-    height: 30px !important;}
-
-/* Simplifying interface */
-
-.tab-icon-sound-label {
-    display: none !important;
+  margin-top : -1px !important;
+  height     : 30px !important;
 }
 
-#nav-bar {
-  background  : none !important;
-  box-shadow  : none !important;
+/* While dragging a tab, Firefox adds 15px of padding under the tabs as extra drop space.
+   With the fixed height above, that padding squeezes the tabs instead, so it's removed */
+#tabbrowser-tabs[movingtab] {
+  padding-bottom : 0 !important;
+  margin-bottom  : 0 !important;
 }
 
 #navigator-toolbox {
-  border      : none !important;
-}
-
-.titlebar-spacer {
-  display     : none !important;
-}
-
-#urlbar-background {
-  border      : none !important;
-}
-
-#urlbar:not(:hover):not([breakout][breakout-extend]) > #urlbar-background {
-  box-shadow  : none !important;
-  background  : none !important;
+  border: none !important;
 }
 
 
-/* Hide urlbar elements when not active */
+/* A D D R E S S   B A R */
 
-.urlbar-icon, #userContext-indicator, #userContext-label {
-  fill        : transparent !important;
-  background  : transparent !important;
-  color       : transparent !important;
+/* Collapsed while not in use */
+#urlbar-container {
+  min-width    : 0 !important;
+  max-width    : 0 !important;
+  margin-inline: 0 !important;
 }
 
-#urlbar:hover .urlbar-icon,
-#urlbar:active .urlbar-icon, 
-#urlbar[focused] .urlbar-icon {
-  fill        : var(--toolbar-color) !important;
+/* Expanded over the whole row while focused (Ctrl+L, click, typing)
+   or while the results list is open */
+#urlbar-container:focus-within,
+#urlbar-container:has(> #urlbar[open]) {
+  position  : absolute !important;
+  top       : 0 !important;
+  bottom    : 0 !important;
+  left      : 0 !important;
+  z-index   : 10 !important;
+  width     : 100vw !important;
+  max-width : none !important;
+  /* covers the tabs behind it; name changed in recent Firefox, old one as fallback */
+  background-color: var(--toolbar-background-color, var(--toolbar-bgcolor)) !important;
 }
 
-#urlbar:focus-within{width: 100vw !important;}
+/* While collapsed, a sliver of the bar still sticks out as a thin vertical line.
+   It is made invisible and clipped instead of hidden, because a hidden bar
+   could not receive focus anymore and Ctrl+L would stop working */
+#urlbar-container:not(:focus-within, :has(> #urlbar[open])) {
+  opacity  : 0 !important;
+  overflow : clip !important;
+}
+
+#urlbar > .urlbar-background {
+  border: none !important;
+}
 
 
-/* animations */
-.subviewbutton,
-#urlbar-background,
-.urlbar-icon,
-#userContext-indicator,
-#userContext-label,
-.urlbar-input-box, 
-#identity-box,
-#tracking-protection-icon-container,
-[anonid=urlbar-go-button],
-.urlbar-icon-wrapper,
-#tracking-protection-icon,
-#identity-box image,
-stack,
-tab:not(:active) .tab-background,
-tab:not([beforeselected-visible])::after,
-tab[visuallyselected] .tab-background::before,
-tab[visuallyselected] .tab-background::before,
-.tab-close-button {
-  transition  : var(--animationSpeed) !important;
+/* A N I M A T I O N S */
+
+.tabbrowser-tab:not(:active) .tab-background,
+.subviewbutton {
+  transition: background-color var(--animationSpeed) !important;
 }
