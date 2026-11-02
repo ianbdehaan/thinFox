@@ -31,10 +31,9 @@ Unfortunately in the way I implemented most of the customization breaks the layo
 if I realize there is interest around customizing this layout I might put some time into making this more accessible.
 
 ## Known bugs:
-1. Dragging tabs around leads to them being cut in half while this is being done.
-2. Opening a new tab makes the search bar half focused, it's neither completely open nor invisible.
+1. Opening a new tab makes the search bar half focused, it's neither completely open nor invisible.
 
-If someone knows how to fix one of these please let me know.
+If someone knows how to fix this please let me know.
 
 ## Extra remarks:
 1. There are no borders or curved edged in the firefox layout, they belong to my hyperland configuration.
